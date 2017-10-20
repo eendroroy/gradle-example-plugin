@@ -2,6 +2,7 @@ buildscript {
     ext {
         projectVersion = "${artifact_version}.${build_number}"
     }
+// TODO: Uncomment these lines after first build to use the plugin
 //    repositories {
 //        flatDir {
 //            dirs "$buildDir/libs"
@@ -14,6 +15,7 @@ buildscript {
 
 apply plugin: 'java-gradle-plugin'
 apply plugin: 'idea'
+// TODO: Uncomment this line after first build to use the plugin
 //apply plugin: 'com.indrajit.example'
 
 group artifact_group
