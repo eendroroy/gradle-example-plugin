@@ -1,0 +1,41 @@
+buildscript {
+    ext {
+        projectVersion = "${artifact_version}.${build_number}"
+    }
+//    repositories {
+//        flatDir {
+//            dirs "$buildDir/libs"
+//        }
+//    }
+//    dependencies {
+//         classpath name: "$project.name-${projectVersion}"
+//    }
+}
+
+apply plugin: 'java-gradle-plugin'
+apply plugin: 'idea'
+//apply plugin: 'com.indrajit.example'
+
+group artifact_group
+version projectVersion
+sourceCompatibility = 1.8
+
+gradlePlugin {
+    plugins {
+        examplePlugin {
+            id = "com.indrajit.example"
+            implementationClass = "com.indrajit.example.ExamplePlugin"
+        }
+    }
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.16.18'
+    implementation 'com.google.guava:guava:22.0'
+    testImplementation 'junit:junit:4.12'
+}
+
