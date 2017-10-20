@@ -1,11 +1,14 @@
 package com.indrajit.example;
 
+import org.gradle.api.NonNullApi;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 
 /**
  * @author indrajit
  */
+
+@NonNullApi
 public class ExamplePlugin implements Plugin<Project> {
     @Override
     public void apply(Project project) {
