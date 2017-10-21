@@ -2,34 +2,36 @@ buildscript {
     ext {
         projectVersion = "${artifact_version}.${build_number}"
     }
-// TODO: Uncomment these lines after first build to use the plugin
-//    repositories {
-//        flatDir {
-//            dirs "$buildDir/libs"
-//        }
-//    }
+    repositories {
+//        TODO: Uncomment this line after first build to use the plugin
+//        flatDir { dirs "$buildDir/libs" }
+        jcenter()
+    }
+//    TODO: Uncomment this line after first build to use the plugin
 //    dependencies {
 //         classpath name: "$project.name-${projectVersion}"
 //    }
 }
 
-apply plugin: 'java-gradle-plugin'
-apply plugin: 'idea'
-// TODO: Uncomment this line after first build to use the plugin
-//apply plugin: 'com.indrajit.example'
+plugins {
+    id 'com.jfrog.bintray' version '1.7'
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+    apply plugin: 'maven'
+    apply plugin: 'maven-publish'
+    apply plugin: 'java'
+    apply plugin: 'java-gradle-plugin'
+//    TODO: Uncomment this line after first build to use the plugin
+//    apply plugin: 'com.indrajit.example'
+}
 
 group artifact_group
 version projectVersion
 sourceCompatibility = 1.8
-
-gradlePlugin {
-    plugins {
-        examplePlugin {
-            id = "com.indrajit.example"
-            implementationClass = "com.indrajit.example.ExamplePlugin"
-        }
-    }
-}
 
 repositories {
     jcenter()
@@ -41,3 +43,51 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 }
 
+gradlePlugin {
+    plugins {
+        examplePlugin {
+            id = "com.indrajit.example"
+            implementationClass = "com.indrajit.example.ExamplePlugin"
+        }
+    }
+}
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+publishing {
+    publications {
+        MyPublication(MavenPublication) {
+            from components.java
+            groupId artifact_group
+            artifactId artifact_name
+            version projectVersion
+        }
+    }
+}
+
+bintray {
+    user = properties.getProperty('bintrayUser')
+    key = properties.getProperty('bintrayApiKey')
+    publications = ['MyPublication']
+    pkg {
+        repo = artifact_group
+        name = artifact_name
+        userOrg = user
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/eendroroy/gradle-example-plugin'
+        labels = ['gradle', 'plugin', 'example']
+        publicDownloadNumbers = true
+//        attributes = []
+        version {
+            name = artifact_version
+            desc = 'Gradle Example Plugin.'
+//            vcsTag = ''
+            attributes = ['gradle-plugin': 'com.indrajit:gradle-example-plugin']
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.4'
+}
