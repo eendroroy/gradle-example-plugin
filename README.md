@@ -1,5 +1,7 @@
 # gradle-example-plugin
 
+[ ![Download](https://api.bintray.com/packages/eendroroy/com.indrajit/gradle-example-plugin/images/download.svg) ](https://bintray.com/eendroroy/com.indrajit/gradle-example-plugin/_latestVersion)
+
 An example gradle plugin
 
 ## Build and Use the plugin
